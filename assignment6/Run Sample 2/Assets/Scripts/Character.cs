@@ -29,6 +29,7 @@ public class Character : MonoBehaviour
     // Jump with power
     void Jump(float power)
     {
+        Debug.Log("Jump");
         GetComponent<Rigidbody2D>().AddForce(new Vector3(0, CharacterJumpPower, 0), ForceMode2D.Impulse);
     }
 
@@ -38,6 +39,7 @@ public class Character : MonoBehaviour
         // tag가 Obstacle인 것과 충돌하면 게임 오버한다.
         // ---------- TODO ---------- 
         if (col.gameObject.tag == "Platform"){
+            Debug.Log("Grounded");
             RemainJump = 2;
         }
         else if (col.gameObject.tag == "Obstacle"){

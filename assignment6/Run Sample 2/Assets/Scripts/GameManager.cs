@@ -36,7 +36,9 @@ public class GameManager : MonoBehaviour
     {
         // CamObj는 Character의 x, y position을 따라간다.
         // ---------- TODO ---------- 
-        CamObj.transform.position = new Vector3(Character.transform.position.x, Character.transform.position.y, CamObj.transform.position.z);
+        if (CamObj && Character) {
+            CamObj.transform.position = new Vector3(Character.transform.position.x, Character.transform.position.y, CamObj.transform.position.z);
+        }
         // -------------------- 
     }
 
@@ -44,7 +46,9 @@ public class GameManager : MonoBehaviour
     {
         // Character는 초당 CharacterSpeed의 속도로 우측으로 움직인다.
         // ---------- TODO ---------- 
-        Character.transform.position += Time.deltaTime * new Vector3(CharacterSpeed, 0, 0);
+        if (Character) {
+            Character.transform.position += Time.deltaTime * new Vector3(CharacterSpeed, 0, 0);
+        }
         // -------------------- 
     }
 
