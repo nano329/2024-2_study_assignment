@@ -26,7 +26,9 @@ public class GameManager : MonoBehaviour
     {
         // PlayerBall, CamObj, MyUIManager를 얻어온다.
         // ---------- TODO ---------- 
-        
+        PlayerBall = GameObject.Find("PlayerBall");
+        CamObj = GameObject.Find("Main Camera");
+        MyUIManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         // -------------------- 
     }
 
@@ -40,13 +42,15 @@ public class GameManager : MonoBehaviour
     {
         // 좌클릭시 raycast하여 클릭 위치로 ShootBallTo 한다.
         // ---------- TODO ---------- 
-        
+        if(Input.GetMouseButtonDown(0)){
+            ShootBallTo(Input.mousePosition);
+        }
         // -------------------- 
     }
 
     void LateUpdate()
     {
-        CamMove();
+        //CamMove();
     }
 
     void SetupBalls()
@@ -57,14 +61,21 @@ public class GameManager : MonoBehaviour
         // 각 공의 이름은 {index}이며, 아래 함수로 index에 맞는 Material을 적용시킨다.
         // Obj.GetComponent<MeshRenderer>().material = Resources.Load<Material>("Materials/ball_1");
         // ---------- TODO ---------- 
-        
+        int cnt = 1;
+        for(int i = 1; i <= 5; i++){
+            for(int j = 1; j <= i; j++){
+                GameObject Ball = GameObject.Find("");
+            }
+        }
         // -------------------- 
     }
     void CamMove()
     {
         // CamObj는 PlayerBall을 CamSpeed의 속도로 따라간다.
         // ---------- TODO ---------- 
-        
+        if (CamObj && PlayerBall) {
+            CamObj.transform.position = new Vector3(PlayerBall.transform.position.x, PlayerBall.transform.position.y, CamObj.transform.position.z);
+        }
         // -------------------- 
     }
 
@@ -79,7 +90,8 @@ public class GameManager : MonoBehaviour
         // 힘은 CalcPower 함수로 계산하고, y축 방향 힘은 0으로 한다.
         // ForceMode.Impulse를 사용한다.
         // ---------- TODO ---------- 
-        
+        Rigidbody MyRigidBody = PlayerBall.GetComponent<Rigidbody>();
+        MyRigidBody.AddForce(targetPos - new Vector3(0, targetPos.y, 0), ForceMode.Impulse);
         // -------------------- 
     }
     
@@ -88,7 +100,7 @@ public class GameManager : MonoBehaviour
     {
         // "{ballName} falls"을 1초간 띄운다.
         // ---------- TODO ---------- 
-        
+        MyUIManager.DisplayText($"{ballName} falls", 1);
         // -------------------- 
     }
 }
