@@ -43,14 +43,16 @@ public class GameManager : MonoBehaviour
         // 좌클릭시 raycast하여 클릭 위치로 ShootBallTo 한다.
         // ---------- TODO ---------- 
         if(Input.GetMouseButtonDown(0)){
-            ShootBallTo(Input.mousePosition);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Physics.Raycast(ray, out RaycastHit hitInfo);
+            ShootBallTo(hitInfo.point);
         }
         // -------------------- 
     }
 
     void LateUpdate()
     {
-        //CamMove();
+        CamMove();
     }
 
     void SetupBalls()
@@ -62,10 +64,18 @@ public class GameManager : MonoBehaviour
         // Obj.GetComponent<MeshRenderer>().material = Resources.Load<Material>("Materials/ball_1");
         // ---------- TODO ---------- 
         int cnt = 1;
+        Vector3 pos = StartPosition;
         for(int i = 1; i <= 5; i++){
             for(int j = 1; j <= i; j++){
-                GameObject Ball = GameObject.Find("");
+                GameObject Ball = Instantiate(BallPrefab, pos, StartRotation);
+                Ball.name = cnt.ToString();
+                Ball.GetComponent<MeshRenderer>().material = Resources.Load<Material>($"Materials/ball_{cnt}");
+
+                cnt ++;
+                pos.x += RowSpacing + BallRadius * 2;
             }
+            pos.z -= RowSpacing + BallRadius * 2;
+            pos.x = StartPosition.x - BallRadius * i;
         }
         // -------------------- 
     }
@@ -74,7 +84,7 @@ public class GameManager : MonoBehaviour
         // CamObj는 PlayerBall을 CamSpeed의 속도로 따라간다.
         // ---------- TODO ---------- 
         if (CamObj && PlayerBall) {
-            CamObj.transform.position = new Vector3(PlayerBall.transform.position.x, PlayerBall.transform.position.y, CamObj.transform.position.z);
+            CamObj.transform.position = new Vector3(PlayerBall.transform.position.x, CamObj.transform.position.y, PlayerBall.transform.position.z);
         }
         // -------------------- 
     }
@@ -91,7 +101,10 @@ public class GameManager : MonoBehaviour
         // ForceMode.Impulse를 사용한다.
         // ---------- TODO ---------- 
         Rigidbody MyRigidBody = PlayerBall.GetComponent<Rigidbody>();
-        MyRigidBody.AddForce(targetPos - new Vector3(0, targetPos.y, 0), ForceMode.Impulse);
+        Vector3 target = targetPos - PlayerBall.transform.position;
+        target.y = 0;
+        Debug.Log(target * CalcPower(target));
+        MyRigidBody.AddForce(target * CalcPower(target) * 0.1f, ForceMode.Impulse);
         // -------------------- 
     }
     
