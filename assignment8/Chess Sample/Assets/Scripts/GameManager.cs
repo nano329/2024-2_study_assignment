@@ -40,7 +40,14 @@ public class GameManager : MonoBehaviour
         // TilePrefab을 TileParent의 자식으로 생성하고, 배치함
         // Tiles를 채움
         // --- TODO ---
-        
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                GameObject Tile = Instantiate(TilePrefab, TileParent);
+                Tile.transform.position = new Vector3(i, 0, j);
+                Tiles[i, j] = Tile.GetComponent<Tile>();
+                Tiles[i, j].Initialize(i, j);
+            }
+        }
         // ------
 
         PlacePieces(1);
@@ -51,7 +58,14 @@ public class GameManager : MonoBehaviour
     {
         // PlacePiece를 사용하여 Piece들을 적절한 모양으로 배치
         // --- TODO ---
-        
+        for (int i = 0; i < 8; i++){
+            PlacePiece(PiecePrefabs[5], i, (direction == 1 ? 6 : 1), direction);
+        }
+        int[] PieceOrder = [4, 3, 2, (direction == 1 ? 1 : 0), (direction == 1 ? 0 : 1), 2, 3, 4];
+        for (int i = 0; i < 8; i++){
+            PlacePiece(PiecePrefabs[PieceOrder[i]], i, (direction == 1 ? 7 : 0), direction);
+        }
+
         // ------
     }
 
@@ -62,7 +76,11 @@ public class GameManager : MonoBehaviour
         // Pieces를 채움
         // 배치한 Piece를 리턴
         // --- TODO ---
-        
+        GameObject PieceObject = Instantiate(PiecePrefabs[pieceType], PieceParent);
+        PieceObject.transform.position = new Vector3(pos[0], 0, pos[1]);
+        Piece piece = PieceObject.GetComponent<PieceObject>();
+        piece.Initialize(pos[0], pos[1], direction);
+        Pieces[pos[0], pos[1]] = piece;
         // ------
     }
 
