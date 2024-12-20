@@ -52,6 +52,7 @@ public class UIManager : MonoBehaviour
     public void ShowCheck()
     {
         ShowMessage("Check!", MessageDuration);
+        Debug.Log("Check!");
     }
 
     public void ShowCheckmate(int winner)
